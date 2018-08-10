@@ -1,12 +1,24 @@
-<button mat-raised-button (click)="isLinear = !isLinear" id="toggle-linear">
-  {{!isLinear ? 'Enable linear mode' : 'Disable linear mode'}}
-</button>
-<mat-horizontal-stepper [linear]="isLinear" #stepper>
+<mat-vertical-stepper [linear]="false" #stepper>
   <mat-step [stepControl]="firstFormGroup">
-    <form [formGroup]="firstFormGroup">
-      <ng-template matStepLabel>Fill out your name</ng-template>
-      <mat-form-field>
-        <input matInput placeholder="Last name, First name" formControlName="firstCtrl" required>
+    <form [formGroup]="firstFormGroup" class="form-container">
+      <ng-template matStepLabel>Choose Accounts</ng-template>
+      <mat-form-field
+          [hideRequiredMarker]="false"
+          [floatLabel]="auto">
+        <mat-select required>
+          <mat-option>-- None --</mat-option>
+          <mat-option value="option">Option</mat-option>
+        </mat-select>
+        <mat-label>Transfer From</mat-label>
+      </mat-form-field>
+       <mat-form-field
+          [hideRequiredMarker]="false"
+          [floatLabel]="auto">
+        <mat-select required>
+          <mat-option>-- None --</mat-option>
+          <mat-option value="option">Option</mat-option>
+        </mat-select>
+        <mat-label>Transfer To</mat-label>
       </mat-form-field>
       <div>
         <button mat-button matStepperNext>Next</button>
@@ -33,4 +45,4 @@
       <button mat-button (click)="stepper.reset()">Reset</button>
     </div>
   </mat-step>
-</mat-horizontal-stepper>
+</mat-vertical-stepper>

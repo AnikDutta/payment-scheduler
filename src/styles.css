@@ -3,3 +3,17 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: 'Roboto', sans-serif; }
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
+.mat-app-background {
+    display: flex;
+    flex-flow: column;
+    background-color: #fff;
+}
+payment-stepper{
+    width: 75%;
+    margin: 50px auto;
+    max-width: 600px;
+}
+mat-toolbar{
+        justify-content: space-evenly;
+}
