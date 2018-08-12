@@ -1,6 +1,7 @@
 .form-container {
   display: flex;
   flex-direction: column;
+  width: 90%;
 }
 
 .form-container > * {
@@ -18,4 +19,36 @@
 .form-container .mat-radio-button {
   margin: 0 5px;
 }
+.next-button-wrapper{
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+.next-button-wrapper.reset-button{
+  justify-content: center;
+}
 
+.payment-radio-wrapper{
+  padding: 10px 0 25px;
+}
+.payment-radio-wrapper mat-radio-group{
+  margin-left: -5px;
+}
+.review-payment-list h2{
+  color: rgba(0,0,0,.54);
+  margin-bottom: 5px;
+}
+.confirmation-content{
+  margin: 10px 0 40px;
+}
+.background-green{
+  background: #16b616;
+  margin-top: -3px;
+}
+.sucess-message{
+  margin-left: 8px;
+  font-size: 14px;
+}
+.fill-white{
+  -webkit-text-fill-color: white;
+}

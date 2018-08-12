@@ -11,7 +11,7 @@ body { margin: 0; font-family: 'Roboto', sans-serif; }
 }
 payment-stepper{
     width: 75%;
-    margin: 50px auto;
+    margin: 20px auto 10px;
     max-width: 600px;
 }
 mat-toolbar{

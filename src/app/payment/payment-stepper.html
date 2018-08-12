@@ -1,5 +1,5 @@
 <mat-vertical-stepper [linear]="false" #stepper>
-  <mat-step [stepControl]="firstFormGroup">
+  <mat-step>
     <form [formGroup]="firstFormGroup" class="form-container">
       <ng-template matStepLabel>Choose Accounts</ng-template>
       <mat-form-field
@@ -20,29 +20,97 @@
         </mat-select>
         <mat-label>Transfer To</mat-label>
       </mat-form-field>
-      <div>
-        <button mat-button matStepperNext>Next</button>
-      </div>
-    </form>
-  </mat-step>
-  <mat-step [stepControl]="secondFormGroup">
-    <form [formGroup]="secondFormGroup">
-      <ng-template matStepLabel>Fill out your address</ng-template>
-      <mat-form-field>
-        <input matInput placeholder="Address" formControlName="secondCtrl" required>
-      </mat-form-field>
-      <div>
-        <button mat-button matStepperPrevious>Back</button>
-        <button mat-button matStepperNext>Next</button>
+      <div class="next-button-wrapper">
+        <button mat-raised-button matStepperNext color="primary">Next</button>
       </div>
     </form>
   </mat-step>
   <mat-step>
-    <ng-template matStepLabel>Done</ng-template>
-    You are now done.
-    <div>
-      <button mat-button matStepperPrevious>Back</button>
-      <button mat-button (click)="stepper.reset()">Reset</button>
-    </div>
+    <form [formGroup]="secondFormGroup" class="form-container">
+      <ng-template matStepLabel>Choose Transaction Details</ng-template>
+      <mat-form-field>
+        <input matInput placeholder="Amount" type="number" formControlName="secondCtrl" autocomplete="off" required>
+      </mat-form-field>
+      <section class="payment-radio-wrapper">
+        <mat-radio-group [(ngModel)]="paymenttiming">
+          <mat-radio-button value="paynow" checked>Pay Now</mat-radio-button>
+          <mat-radio-button value="paylater">Pay Later</mat-radio-button>
+        </mat-radio-group>
+      </section>
+      <mat-form-field
+          [hideRequiredMarker]="false"
+          [floatLabel]="auto">
+        <mat-select required>
+          <mat-option>Once</mat-option>
+          <mat-option value="weekly">Weekly</mat-option>
+          <mat-option value="biweekly">Bi-weekly</mat-option>
+          <mat-option value="monthly">Monthly</mat-option>
+          <mat-option value="lastfriday">Last Friday Of Month</mat-option>
+        </mat-select>
+        <mat-label>Transfer Frequency</mat-label>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput [matDatepicker]="picker" placeholder="Choose a date">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <div>
+        <div class="next-button-wrapper">
+          <button mat-raised-button matStepperNext color="primary">Next</button>
+        </div>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step>
+    <form [formGroup]="secondFormGroup" class="form-container">
+      <ng-template matStepLabel>Review Payment</ng-template>
+      <mat-list class="review-payment-list">
+        <mat-list-item>
+          <h2 matLine> From Account </h2>
+          <p matLine>
+            <span> Savings </span>
+            <span class="demo-2"> -- xxxx123456 </span>
+          </p>
+        </mat-list-item>
+        <mat-divider *ngIf="true"></mat-divider>
+        <mat-list-item>
+          <h2 matLine> To Account </h2>
+          <p matLine>
+            <span> Mortgage </span>
+            <span class="demo-2"> -- xxxx123456 </span>
+          </p>
+        </mat-list-item>
+        <mat-divider *ngIf="true"></mat-divider>
+        <mat-list-item>
+          <h2 matLine>Payment Schedule</h2>
+          <p matLine>
+            <span> Starting </span>
+            <span>  10/05/2018</span>
+          </p>
+        </mat-list-item>
+        <mat-divider *ngIf="true"></mat-divider>
+        <mat-list-item>
+          <h2 matLine> Payment Frequency </h2>
+          <p matLine>
+            <span>Monthly</span>
+          </p>
+        </mat-list-item>
+      </mat-list>
+
+      <div class="next-button-wrapper">
+        <button mat-raised-button matStepperNext color="primary">Confirm Payment</button>
+      </div>  
+    </form>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Confirmation</ng-template>
+      <div fxLayout="wrap row" fxLayoutAlign="start" class="confirmation-content">
+          <div class="mat-step-icon background-green"><mat-icon class="fill-white">done</mat-icon></div>
+          <span class="sucess-message">Your payment has been scheduled successfully</span>
+      </div>
+      <div class="next-button-wrapper reset-button">
+        <button mat-raised-button matStepperNext 
+            (click)="stepper.reset()">Make another Transaction</button>
+      </div>
   </mat-step>
 </mat-vertical-stepper>
