@@ -29,7 +29,7 @@
 }
 
 .payment-radio-wrapper{
-  padding: 10px 0 25px;
+  padding: 10px 0 18px;
 }
 .payment-radio-wrapper mat-radio-group{
   margin-left: -5px;
@@ -38,7 +38,7 @@
   color: rgba(0,0,0,.54);
   margin-bottom: 5px;
 }
-.confirmation-content{
+.confirmation-content, .error-content{
   margin: 10px 0 40px;
 }
 .background-green{
@@ -51,4 +51,10 @@
 }
 .fill-white{
   -webkit-text-fill-color: white;
+}
+.fill-red.mat-icon{
+  -webkit-text-fill-color: red;
+  font-size: 28px;
+  line-height: 9px;
+  margin-left: -10px
 }

@@ -108,6 +108,10 @@
           <div class="mat-step-icon background-green"><mat-icon class="fill-white">done</mat-icon></div>
           <span class="sucess-message">Your payment has been scheduled successfully</span>
       </div>
+      <div fxLayout="wrap row" fxLayoutAlign="start" class="error-content">
+          <div class="mat-step-icon"><mat-icon class="fill-red">error</mat-icon></div>
+          <span class="sucess-message">Payment Unsucessfull</span>
+      </div>
       <div class="next-button-wrapper reset-button">
         <button mat-raised-button matStepperNext 
             (click)="stepper.reset()">Make another Transaction</button>
