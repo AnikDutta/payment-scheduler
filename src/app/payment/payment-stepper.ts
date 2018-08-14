@@ -29,9 +29,9 @@ export class PaymentStepper implements OnInit {
     this.verifyFormGroup = this._formBuilder.group({
       verifyCtrl: ['', Validators.required]
     });
-    this.customer = new Customer(152493, "Dipanjan");
+    this.customer = {id:152493, name:"Dipanjan"};
     console.log(`customer---------------`,this.customer);
-    //this.paymentProfile.customer = this.customer
+    //this.paymentProfile.customer = this.customer;
     console.log(`paymentProfile---------------`+this.paymentProfile);
   }
 
