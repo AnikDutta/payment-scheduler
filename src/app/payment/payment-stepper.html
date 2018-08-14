@@ -1,6 +1,6 @@
-<mat-vertical-stepper [linear]="false" #stepper>
+<mat-vertical-stepper linear="true" #stepper>
   <mat-step>
-    <form [formGroup]="firstFormGroup" class="form-container">
+    <form class="form-container" [formGroup]="accountFormGroup">
       <ng-template matStepLabel>Choose Accounts</ng-template>
       <mat-form-field
           [hideRequiredMarker]="false"
@@ -21,15 +21,15 @@
         <mat-label>Transfer To</mat-label>
       </mat-form-field>
       <div class="next-button-wrapper">
-        <button mat-raised-button matStepperNext color="primary">Next</button>
+        <button type="button" mat-raised-button color="primary" (click)="displayAttributes(stepper)">Next</button>
       </div>
     </form>
   </mat-step>
   <mat-step>
-    <form [formGroup]="secondFormGroup" class="form-container">
+    <form class="form-container" [formGroup]="paymentFormGroup">
       <ng-template matStepLabel>Choose Transaction Details</ng-template>
       <mat-form-field>
-        <input matInput placeholder="Amount" type="number" formControlName="secondCtrl" autocomplete="off" required>
+        <input matInput placeholder="Amount" type="number" name="amount" autocomplete="off" required>
       </mat-form-field>
       <section class="payment-radio-wrapper">
         <mat-radio-group [(ngModel)]="paymenttiming">
@@ -56,13 +56,13 @@
       </mat-form-field>
       <div>
         <div class="next-button-wrapper">
-          <button mat-raised-button matStepperNext color="primary">Next</button>
+          <button mat-raised-button color="primary" type="button" (click)="verifyTransaction(stepper)">Next</button>
         </div>
       </div>
     </form>
   </mat-step>
   <mat-step>
-    <form [formGroup]="secondFormGroup" class="form-container">
+    <form class="form-container" [formGroup]="verifyFormGroup">
       <ng-template matStepLabel>Review Payment</ng-template>
       <mat-list class="review-payment-list">
         <mat-list-item>

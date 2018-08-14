@@ -1,9 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
 html, body { height: 100%; }
 body { margin: 0; font-family: 'Roboto', sans-serif; }
-@import '~@angular/material/prebuilt-themes/indigo-pink.css';
-
 .mat-app-background {
     display: flex;
     flex-flow: column;
@@ -15,5 +14,5 @@ payment-stepper{
     max-width: 600px;
 }
 mat-toolbar{
-        justify-content: space-evenly;
+    justify-content: space-evenly;
 }

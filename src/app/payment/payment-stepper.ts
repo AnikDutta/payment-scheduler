@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-
+import {Customer, Profile} from '../_models';
 /**
  * @title Payment Stepper
  */
@@ -11,17 +11,40 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 })
 export class PaymentStepper implements OnInit {
   isLinear = false;
-  firstFormGroup: FormGroup;
-  secondFormGroup: FormGroup;
-
+  accountFormGroup: FormGroup;
+  paymentFormGroup: FormGroup;
+  verifyFormGroup: FormGroup;
+  customer: Customer;
+  paymentProfile: Profile;
   constructor(private _formBuilder: FormBuilder) {}
 
   ngOnInit() {
-    this.firstFormGroup = this._formBuilder.group({
-      firstCtrl: ['', Validators.required]
+    this.accountFormGroup = this._formBuilder.group({
+      sourceCtrl: ['', Validators.required],
+      targetCtrl: ['', Validators.required]
     });
-    this.secondFormGroup = this._formBuilder.group({
-      secondCtrl: ['', Validators.required]
+    this.paymentFormGroup = this._formBuilder.group({
+      amountCtrl: ['', Validators.required]
     });
+    this.verifyFormGroup = this._formBuilder.group({
+      verifyCtrl: ['', Validators.required]
+    });
+    this.customer = new Customer(152493, "Dipanjan");
+    console.log(`customer---------------`,this.customer);
+    //this.paymentProfile.customer = this.customer
+    console.log(`paymentProfile---------------`+this.paymentProfile);
   }
+
+  private displayAttributes(stepper){
+    console.log(`stepper object 1----------`, stepper);
+    stepper.next();
+  }
+
+  private verifyTransaction(stepper){
+    console.log(`stepper object 2----------`, stepper);
+    stepper.next();
+  }
+
+
+
 }
