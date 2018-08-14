@@ -5,18 +5,16 @@
       <mat-form-field
           [hideRequiredMarker]="false"
           [floatLabel]="auto">
-        <mat-select required>
-          <mat-option>-- None --</mat-option>
-          <mat-option value="option">Option</mat-option>
+        <mat-select required (selectionChange)="sourceAccountChange($event.value)">
+          <mat-option *ngFor="let source_account of paymentProfile.source_account_list" value="{{source_account.id}}">{{source_account.type.description}}--{{source_account.number}}</mat-option>
         </mat-select>
         <mat-label>Transfer From</mat-label>
       </mat-form-field>
        <mat-form-field
           [hideRequiredMarker]="false"
           [floatLabel]="auto">
-        <mat-select required>
-          <mat-option>-- None --</mat-option>
-          <mat-option value="option">Option</mat-option>
+        <mat-select required (selectionChange)="targetAccountChange($event.value)" [(value)]="target_account_model">
+          <mat-option *ngFor="let target_account of paymentProfile.target_account_list" value="{{target_account.id}}">{{target_account.type.description}}--{{target_account.number}}</mat-option>
         </mat-select>
         <mat-label>Transfer To</mat-label>
       </mat-form-field>

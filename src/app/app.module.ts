@@ -23,7 +23,8 @@ import { fakeBackendProvider } from './_helpers';
     MaterialAppModule,
     FormsModule,
     ReactiveFormsModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    HttpClientModule
   ],
   providers: [
     AlertService,
