@@ -1,5 +1,5 @@
 <mat-vertical-stepper linear="true" #stepper>
-  <mat-step [stepControl]="accountFormGroup">
+  <mat-step [stepControl]="accountFormGroup" [editable]="!confirmPayDisabled">
     <form class="form-container" [formGroup]="accountFormGroup">
       <ng-template matStepLabel>Choose Accounts</ng-template>
       <mat-form-field
@@ -23,7 +23,7 @@
       </div>
     </form>
   </mat-step>
-  <mat-step [stepControl]="paymentFormGroup">
+  <mat-step [stepControl]="paymentFormGroup" [editable]="!confirmPayDisabled">
     <form class="form-container" [formGroup]="paymentFormGroup">
       <ng-template matStepLabel>Choose Transaction Details</ng-template>
       <mat-form-field>
