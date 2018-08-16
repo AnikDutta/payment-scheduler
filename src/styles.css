@@ -16,3 +16,6 @@ payment-stepper{
 mat-toolbar{
     justify-content: space-evenly;
 }
+.mat-progressbar-container{
+    height: 5px;
+}

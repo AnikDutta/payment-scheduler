@@ -8,7 +8,7 @@ import {PaymentStepper} from './payment/payment-stepper';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {AlertComponent} from './_directives';
-import { AlertService, PaymentProfileService } from './_services';
+import { AlertService, PaymentProfileService, LoaderService } from './_services';
 import { JwtInterceptor, ErrorInterceptor } from './_helpers';
 import { fakeBackendProvider } from './_helpers';
 @NgModule({
@@ -29,6 +29,7 @@ import { fakeBackendProvider } from './_helpers';
   providers: [
     AlertService,
     PaymentProfileService,
+    LoaderService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
 

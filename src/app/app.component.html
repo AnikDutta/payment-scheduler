@@ -1,6 +1,6 @@
 <div class="mat-app-background basic-container">
   <mat-toolbar color="primary">Payment Scheduler</mat-toolbar>
-  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  <div class="mat-progressbar-container"><mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar></div>
   <alert></alert>
   <payment-stepper>loading</payment-stepper>
 </div>

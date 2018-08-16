@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators, FormControl} from '@angular/forms';
 import {Customer, Profile} from '../_models';
 import { PaymentProfileService } from '../_services';
 
@@ -18,7 +18,9 @@ export class PaymentStepper implements OnInit {
   verifyFormGroup: FormGroup;
   customer: Customer;
   paymentProfile: Profile;
-  target_account_model = '';
+  verifiedProfile: Profile;
+  confirmPayDisabled: boolean = false;
+
   constructor(private _formBuilder: FormBuilder, private _paymentProfileService : PaymentProfileService) {}
 
   ngOnInit() {
@@ -26,57 +28,75 @@ export class PaymentStepper implements OnInit {
       sourceCtrl: ['', Validators.required],
       targetCtrl: ['', Validators.required]
     });
+ 
     this.paymentFormGroup = this._formBuilder.group({
-      amountCtrl: ['', Validators.required]
+      amountCtrl: ['', Validators.required],
+      payLaterCtrl : ['paynow'],
+      transferFrequencyCtrl : [null],
+      initiationDateCtrl: [null]
     });
-    this.verifyFormGroup = this._formBuilder.group({
-      verifyCtrl: ['', Validators.required]
-    });
+    // this.verifyFormGroup = this._formBuilder.group({
+    //   verifyCtrl: ['', Validators.required]
+    // });
     this.customer = {id:152493, name:"Dipanjan"};
-    console.log(`customer---------------`,this.customer);
     this.paymentProfile = new Profile();
     this.paymentProfile.customer = this.customer;
-    console.log(`paymentProfile---------------`,this.paymentProfile);
     this._paymentProfileService.getSourceAccount(this.paymentProfile).subscribe(newprofile => {
       this.paymentProfile.source_account_list = newprofile.source_account_list;
-      console.log(`paymentProfile---------------`,this.paymentProfile);
-
     });
   }
 
   private displayAttributes(stepper){
-    console.log(`stepper object 1----------`, stepper);
-    stepper.next();
+    this._paymentProfileService.getAttributes(this.paymentProfile).subscribe(newprofile => {
+      this.paymentProfile.transaction_frequency_list = newprofile.transaction_frequency_list;
+       stepper.next();
+    });
+   
   }
 
   private verifyTransaction(stepper){
-    console.log(`stepper object 2----------`, stepper);
-    stepper.next();
+    this.verifiedProfile = null;
+    this.paymentProfile.amount = this.paymentFormGroup.value.amountCtrl;
+    this.paymentProfile.frequency = this.paymentFormGroup.value.transferFrequencyCtrl;
+    this.paymentProfile.initiationDate = this.paymentFormGroup.value.initiationDateCtrl;
+    console.log(`form Value verifiedprofile------------`, this.paymentProfile);    
+    this._paymentProfileService.validateAttributes(this.paymentProfile).subscribe(verifiedprofile => {
+      this.verifiedProfile = verifiedprofile;
+      stepper.next();
+    });
+
   }
 
-  private sourceAccountChange(source_id){
+  private sourceAccountChange(selected_source_account){
     this.paymentProfile.target_account_list = [];
-    this.target_account_model = '';
-    let selected_source_account = this.paymentProfile.source_account_list.filter(source_account =>{
-      return source_account.id == source_id;
-    });
-    this.paymentProfile.source_account = selected_source_account[0];
-    console.log(`selected source-----------`,this.paymentProfile);
+    this.accountFormGroup.controls["targetCtrl"].reset();
+    this.paymentProfile.source_account = selected_source_account;
    
     this._paymentProfileService.getTargetAccount(this.paymentProfile).subscribe(newprofile => {
       this.paymentProfile.target_account_list = newprofile.target_account_list;
-      console.log(`paymentProfile for Target---------------`,this.paymentProfile);
-
     });
   }
 
-  private targetAccountChange(target_id){
-   
-    let selected_target_account = this.paymentProfile.target_account_list.filter(target_account =>{
-      return target_account.id == target_id;
+  private targetAccountChange(selected_target_account){
+    this.paymentProfile.target_account = selected_target_account;
+  }
+
+  private paymentOptionRadioChange(radiovalue){
+    if(radiovalue === 'paynow'){
+      this.paymentFormGroup.controls["transferFrequencyCtrl"].reset();
+      this.paymentFormGroup.controls["initiationDateCtrl"].reset();
+    }
+  }
+  private getProfile(stepper){
+
+    this._paymentProfileService.getProfiles(this.verifiedProfile).subscribe(newprofile => {
+      if(newprofile){
+        this.confirmPayDisabled = true;
+      }else{
+        this.confirmPayDisabled = false;
+      }
+       stepper.next();
     });
-    this.paymentProfile.target_account = selected_target_account[0];
-    console.log(`selected target-----------`,this.paymentProfile);
   }
 
 }
