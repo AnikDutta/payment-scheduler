@@ -21,7 +21,7 @@ export class PaymentStepper implements OnInit {
   verifiedProfile: Profile;
   retainedPaymentProfile: Profile;
   confirmPayDisabled: boolean = false;
-
+  nowDate: Date = new Date();
   constructor(private _formBuilder: FormBuilder, private _paymentProfileService : PaymentProfileService) {}
 
   ngOnInit() {
@@ -32,13 +32,9 @@ export class PaymentStepper implements OnInit {
  
     this.paymentFormGroup = this._formBuilder.group({
       amountCtrl: ['', Validators.required],
-      payLaterCtrl : ['paynow'],
-      transferFrequencyCtrl : [null],
-      initiationDateCtrl: [null]
+      payLaterCtrl : ['paynow']
     });
-    // this.verifyFormGroup = this._formBuilder.group({
-    //   verifyCtrl: ['', Validators.required]
-    // });
+    
     this.customer = {id:152493, name:"Dipanjan"};
     this.paymentProfile = new Profile();
     this.retainedPaymentProfile = new Profile();
@@ -53,7 +49,8 @@ export class PaymentStepper implements OnInit {
   private displayAttributes(stepper){
     this._paymentProfileService.getAttributes(this.paymentProfile).subscribe(newprofile => {
       this.paymentProfile.transaction_frequency_list = newprofile.transaction_frequency_list;
-       stepper.next();
+      //this.paymentFormGroup.value.payLaterCtrl = 'paynow';
+      stepper.next();
     });
    
   }
@@ -64,7 +61,7 @@ export class PaymentStepper implements OnInit {
     
     if(this.paymentFormGroup.value.payLaterCtrl === 'paylater'){
       this.paymentProfile.frequency = this.paymentFormGroup.value.transferFrequencyCtrl;
-      this.paymentProfile.initiationDate = this.paymentFormGroup.value.initiationDateCtrl;
+      this.paymentProfile.initiationDate = this.paymentFormGroup.value.initiationDateCtrl.getTime();
     }else{
       this.paymentProfile.frequency = null;
       this.paymentProfile.initiationDate = null;
@@ -93,10 +90,13 @@ export class PaymentStepper implements OnInit {
   }
 
   private paymentOptionRadioChange(radiovalue){
-    /*if(radiovalue === 'paynow'){
-      this.paymentFormGroup.controls["transferFrequencyCtrl"].reset();
-      this.paymentFormGroup.controls["initiationDateCtrl"].reset();
-    }*/
+    if(radiovalue === 'paylater'){
+      this.paymentFormGroup.addControl('transferFrequencyCtrl',new FormControl('', Validators.required));
+      this.paymentFormGroup.addControl('initiationDateCtrl',new FormControl('', Validators.required));
+    }else{
+      this.paymentFormGroup.removeControl('transferFrequencyCtrl');
+      this.paymentFormGroup.removeControl('initiationDateCtrl');
+    }
   }
   private getProfile(stepper){
 
@@ -112,7 +112,9 @@ export class PaymentStepper implements OnInit {
 
   private makeAnotherTransaction(stepper){
     this.paymentProfile = {...this.retainedPaymentProfile};
+    this.confirmPayDisabled = false;
     stepper.reset();
+    this.paymentFormGroup.controls["payLaterCtrl"].setValue('paynow');
   }
 
 }
