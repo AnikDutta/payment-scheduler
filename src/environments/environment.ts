@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://10.227.88.31:8080/acme-integration'
+  apiUrl: 'http://10.227.88.31:8080/transfer-composite',
+  customer: {id:100, name:"Dipanjan"}
 };
 
 /*

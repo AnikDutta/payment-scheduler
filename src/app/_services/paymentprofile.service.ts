@@ -14,7 +14,7 @@ export class PaymentProfileService {
         return this.http.post<Profile>(`${environment.apiUrl}/accounts/target`,profile);
     }
     getAttributes(profile: Profile) {
-        return this.http.post<Profile>(`${environment.apiUrl}/attributes/display`,profile);
+        return this.http.post<Profile>(`${environment.apiUrl}/attributes/find`,profile);
     }
     validateAttributes(profile: Profile) {
         return this.http.post<Profile>(`${environment.apiUrl}/attributes/validate`,profile);

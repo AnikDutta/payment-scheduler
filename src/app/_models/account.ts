@@ -6,4 +6,5 @@ export class Account{
     type: AccountType;
     balance: number;
     customer: Customer;
+    allow_scheduled_transactions: string;
 }

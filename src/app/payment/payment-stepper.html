@@ -29,33 +29,46 @@
       <mat-form-field>
         <input matInput placeholder="Amount" formControlName="amountCtrl" type="number" name="amount" autocomplete="off" required>
       </mat-form-field>
+
+      <mat-form-field *ngIf="paymentProfile.transfer_type_list && paymentProfile.transfer_type_list.length"
+          [hideRequiredMarker]="false"
+          [floatLabel]="auto">
+        <mat-select required formControlName="transferTypeCtrl" >
+          
+          <mat-option [value]="transfer_type" *ngFor="let transfer_type of paymentProfile.transfer_type_list">
+            {{transfer_type.description}}
+          </mat-option>
+        </mat-select>
+        <mat-label>Transfer Type</mat-label>
+      </mat-form-field>
+
       <section class="payment-radio-wrapper">
         <mat-radio-group formControlName="payLaterCtrl" (change)="paymentOptionRadioChange($event.value)">
-          <mat-radio-button value="paynow">Pay Now</mat-radio-button>
-          <mat-radio-button value="paylater" *ngIf="paymentProfile.transaction_frequency_list && paymentProfile.transaction_frequency_list.length">Pay Later</mat-radio-button>
+          <mat-radio-button value="NOW">Pay Now</mat-radio-button>
+          <mat-radio-button value="SCHEDULED" *ngIf="paymentProfile.transfer_scheme_list && paymentProfile.transfer_scheme_list.length > 1">Pay On</mat-radio-button>
         </mat-radio-group>
       </section>
-         
-      <mat-form-field *ngIf="paymentProfile.transaction_frequency_list && paymentProfile.transaction_frequency_list.length && paymentFormGroup.value.payLaterCtrl === 'paylater'"
+      <mat-form-field *ngIf="paymentProfile.transfer_scheme_list && paymentProfile.transfer_scheme_list.length > 1 && paymentFormGroup.value.payLaterCtrl === 'SCHEDULED'">
+        <input [min]="nowDate" (focus)="picker.open()" matInput [matDatepicker]="picker" placeholder="Choose a date" formControlName="initiationDateCtrl"  autocomplete="off">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field> 
+      <mat-form-field *ngIf="paymentProfile.transfer_scheme_list && paymentProfile.transfer_scheme_list.length > 1 && paymentFormGroup.value.payLaterCtrl === 'SCHEDULED'"
           [hideRequiredMarker]="false"
           [floatLabel]="auto">
         <mat-select required formControlName="transferFrequencyCtrl" >
           
-          <mat-option [value]="transaction_frequency" *ngFor="let transaction_frequency of paymentProfile.transaction_frequency_list">
+          <mat-option [value]="transaction_frequency" *ngFor="let transaction_frequency of paymentProfile.transfer_frequency_list">
             {{transaction_frequency.description}}
           </mat-option>
         </mat-select>
         <mat-label>Transfer Frequency</mat-label>
       </mat-form-field>
-      <mat-form-field *ngIf="paymentProfile.transaction_frequency_list && paymentProfile.transaction_frequency_list.length && paymentFormGroup.value.payLaterCtrl === 'paylater'">
-        <input [min]="nowDate" (focus)="picker.open()" matInput [matDatepicker]="picker" placeholder="Choose a date" formControlName="initiationDateCtrl"  autocomplete="off">
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-      </mat-form-field>
+      
      
       <div>
         <div class="next-button-wrapper">
-          <button mat-raised-button color="primary" [disabled]="!paymentFormGroup.valid" type="button" (click)="verifyTransaction(stepper)">Next</button>
+          <button mat-raised-button color="primary" [disabled]="!true" type="button" (click)="verifyTransaction(stepper)">Next</button>
         </div>
       </div>
     </form>

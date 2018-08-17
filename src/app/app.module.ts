@@ -11,6 +11,7 @@ import {AlertComponent} from './_directives';
 import { AlertService, PaymentProfileService, LoaderService } from './_services';
 import { JwtInterceptor, ErrorInterceptor } from './_helpers';
 import { fakeBackendProvider } from './_helpers';
+
 @NgModule({
   declarations: [
     AppComponent,

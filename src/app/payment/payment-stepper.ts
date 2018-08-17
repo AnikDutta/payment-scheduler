@@ -2,10 +2,13 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators, FormControl} from '@angular/forms';
 import {Customer, Profile} from '../_models';
 import { PaymentProfileService } from '../_services';
+import { environment } from '../../environments/environment';
+import * as _moment from 'moment';
 
 /**
  * @title Payment Stepper
  */
+
 @Component({
   selector: 'payment-stepper',
   templateUrl: 'payment-stepper.html',
@@ -22,7 +25,10 @@ export class PaymentStepper implements OnInit {
   retainedPaymentProfile: Profile;
   confirmPayDisabled: boolean = false;
   nowDate: Date = new Date();
-  constructor(private _formBuilder: FormBuilder, private _paymentProfileService : PaymentProfileService) {}
+
+  constructor(private _formBuilder: FormBuilder, private _paymentProfileService : PaymentProfileService) {
+
+  }
 
   ngOnInit() {
     this.accountFormGroup = this._formBuilder.group({
@@ -32,14 +38,17 @@ export class PaymentStepper implements OnInit {
  
     this.paymentFormGroup = this._formBuilder.group({
       amountCtrl: ['', Validators.required],
-      payLaterCtrl : ['paynow']
+      payLaterCtrl : ['NOW'],
+      transferTypeCtrl: ['', Validators.required]
     });
     
-    this.customer = {id:152493, name:"Dipanjan"};
+    this.customer = environment.customer;
     this.paymentProfile = new Profile();
     this.retainedPaymentProfile = new Profile();
+
     this.paymentProfile.customer = this.customer;
     this.retainedPaymentProfile.customer = {...this.customer}
+
     this._paymentProfileService.getSourceAccount(this.paymentProfile).subscribe(newprofile => {
       this.paymentProfile.source_account_list = newprofile.source_account_list;
       this.retainedPaymentProfile.source_account_list = [...newprofile.source_account_list]
@@ -47,9 +56,10 @@ export class PaymentStepper implements OnInit {
   }
 
   private displayAttributes(stepper){
-    this._paymentProfileService.getAttributes(this.paymentProfile).subscribe(newprofile => {
-      this.paymentProfile.transaction_frequency_list = newprofile.transaction_frequency_list;
-      //this.paymentFormGroup.value.payLaterCtrl = 'paynow';
+      this._paymentProfileService.getAttributes(this.paymentProfile).subscribe(newprofile => {
+      this.paymentProfile.transfer_frequency_list = newprofile.transfer_frequency_list;
+      this.paymentProfile.transfer_scheme_list = newprofile.transfer_scheme_list;
+      this.paymentProfile.transfer_type_list= newprofile.transfer_type_list;
       stepper.next();
     });
    
@@ -57,17 +67,18 @@ export class PaymentStepper implements OnInit {
 
   private verifyTransaction(stepper){
     this.verifiedProfile = null;
-    this.paymentProfile.amount = this.paymentFormGroup.value.amountCtrl;
-    
-    if(this.paymentFormGroup.value.payLaterCtrl === 'paylater'){
+    this.paymentProfile.amount = this.paymentFormGroup.value.amountCtrl.toFixed(2);
+    this.paymentProfile.transfer_scheme = this.paymentFormGroup.value.payLaterCtrl;
+    this.paymentProfile.transfer_type = this.paymentFormGroup.value.transferTypeCtrl;
+    if(this.paymentFormGroup.value.payLaterCtrl === 'SCHEDULED'){
       this.paymentProfile.frequency = this.paymentFormGroup.value.transferFrequencyCtrl;
-      this.paymentProfile.initiationDate = this.paymentFormGroup.value.initiationDateCtrl.getTime();
+      this.paymentProfile.initiationDate = _moment(this.paymentFormGroup.value.initiationDateCtrl).format('YYYY/MM/DD');
     }else{
       this.paymentProfile.frequency = null;
       this.paymentProfile.initiationDate = null;
     }
-    
     console.log(`form Value verifiedprofile------------`, this.paymentProfile);    
+
     this._paymentProfileService.validateAttributes(this.paymentProfile).subscribe(verifiedprofile => {
       this.verifiedProfile = verifiedprofile;
       stepper.next();
@@ -79,7 +90,6 @@ export class PaymentStepper implements OnInit {
     this.paymentProfile.target_account_list = [];
     this.accountFormGroup.controls["targetCtrl"].reset();
     this.paymentProfile.source_account = selected_source_account;
-   
     this._paymentProfileService.getTargetAccount(this.paymentProfile).subscribe(newprofile => {
       this.paymentProfile.target_account_list = newprofile.target_account_list;
     });
@@ -90,7 +100,7 @@ export class PaymentStepper implements OnInit {
   }
 
   private paymentOptionRadioChange(radiovalue){
-    if(radiovalue === 'paylater'){
+    if(radiovalue === 'SCHEDULED'){
       this.paymentFormGroup.addControl('transferFrequencyCtrl',new FormControl('', Validators.required));
       this.paymentFormGroup.addControl('initiationDateCtrl',new FormControl('', Validators.required));
     }else{
@@ -99,14 +109,13 @@ export class PaymentStepper implements OnInit {
     }
   }
   private getProfile(stepper){
-
     this._paymentProfileService.getProfiles(this.verifiedProfile).subscribe(newprofile => {
       if(newprofile){
         this.confirmPayDisabled = true;
       }else{
         this.confirmPayDisabled = false;
       }
-       stepper.next();
+        stepper.next();
     });
   }
 
@@ -114,7 +123,7 @@ export class PaymentStepper implements OnInit {
     this.paymentProfile = {...this.retainedPaymentProfile};
     this.confirmPayDisabled = false;
     stepper.reset();
-    this.paymentFormGroup.controls["payLaterCtrl"].setValue('paynow');
+    this.paymentFormGroup.controls["payLaterCtrl"].setValue('NOW');
   }
 
 }
