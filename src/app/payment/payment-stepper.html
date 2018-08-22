@@ -49,7 +49,7 @@
         </mat-radio-group>
       </section>
       <mat-form-field *ngIf="paymentProfile.transfer_scheme_list && paymentProfile.transfer_scheme_list.length > 1 && paymentFormGroup.value.payLaterCtrl === 'SCHEDULED'">
-        <input [min]="nowDate" (focus)="picker.open()" matInput [matDatepicker]="picker" placeholder="Choose a date" formControlName="initiationDateCtrl"  autocomplete="off">
+        <input [min]="nowDate" (focus)="picker.open()" matInput [matDatepicker]="picker" placeholder="Choose Date" formControlName="initiationDateCtrl"  autocomplete="off">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field> 
@@ -97,22 +97,22 @@
           <h2 matLine>Amount</h2>
           <p matLine>
             <span> USD </span>
-            <span>{{verifiedProfile.amount}}</span>
+            <span>{{verifiedProfile.transaction_amount}}</span>
           </p>
         </mat-list-item>
-        <mat-divider></mat-divider>
-        <mat-list-item>
+        <mat-divider  *ngIf="verifiedProfile.transaction_date"></mat-divider>
+        <mat-list-item *ngIf="verifiedProfile.transaction_date">
           <h2 matLine>Payment Schedule</h2>
           <p matLine>
             <span> Starting </span>
-            <span>{{verifiedProfile.amount}}</span>
+            <span>{{verifiedProfile.transaction_date}}</span>
           </p>
         </mat-list-item>
-        <mat-divider></mat-divider>
-        <mat-list-item>
+        <mat-divider *ngIf="verifiedProfile.transfer_frequency"></mat-divider>
+        <mat-list-item *ngIf="verifiedProfile.transfer_frequency">
           <h2 matLine> Payment Frequency </h2>
           <p matLine>
-            <span>{{verifiedProfile.frequency}}</span>
+            <span>{{verifiedProfile.transfer_frequency.description}}</span>
           </p>
         </mat-list-item>
       </mat-list>
@@ -126,15 +126,15 @@
     <ng-template matStepLabel>Confirmation</ng-template>
       <div fxLayout="wrap row" fxLayoutAlign="start" class="confirmation-content" *ngIf="!confirmPayDisable">
           <div class="mat-step-icon background-green"><mat-icon class="fill-white">done</mat-icon></div>
-          <span class="sucess-message">Your payment has been scheduled successfully</span>
+          <span class="sucess-message">Transaction Successful</span>
       </div>
       <div fxLayout="wrap row" fxLayoutAlign="start" class="error-content" *ngIf="confirmPayDisable">
           <div class="mat-step-icon"><mat-icon class="fill-red">error</mat-icon></div>
-          <span class="sucess-message">Payment Unsucessfull</span>
+          <span class="sucess-message">Transaction Unsucessful</span>
       </div>
       <div class="next-button-wrapper reset-button">
         <button mat-raised-button matStepperNext 
-            (click)="makeAnotherTransaction(stepper)">Make another Transaction</button>
+            (click)="makeAnotherTransaction(stepper)">Make Another Transaction</button>
       </div>
   </mat-step>
 </mat-vertical-stepper>

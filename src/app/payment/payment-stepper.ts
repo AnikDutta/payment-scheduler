@@ -67,15 +67,15 @@ export class PaymentStepper implements OnInit {
 
   private verifyTransaction(stepper){
     this.verifiedProfile = null;
-    this.paymentProfile.amount = this.paymentFormGroup.value.amountCtrl.toFixed(2);
+    this.paymentProfile.transaction_amount = parseFloat(this.paymentFormGroup.value.amountCtrl);
     this.paymentProfile.transfer_scheme = this.paymentFormGroup.value.payLaterCtrl;
     this.paymentProfile.transfer_type = this.paymentFormGroup.value.transferTypeCtrl;
     if(this.paymentFormGroup.value.payLaterCtrl === 'SCHEDULED'){
-      this.paymentProfile.frequency = this.paymentFormGroup.value.transferFrequencyCtrl;
-      this.paymentProfile.initiationDate = _moment(this.paymentFormGroup.value.initiationDateCtrl).format('YYYY/MM/DD');
+      this.paymentProfile.transfer_frequency = this.paymentFormGroup.value.transferFrequencyCtrl;
+      this.paymentProfile.transaction_date = _moment(this.paymentFormGroup.value.initiationDateCtrl).format('YYYY-MM-DD');
     }else{
-      this.paymentProfile.frequency = null;
-      this.paymentProfile.initiationDate = null;
+      this.paymentProfile.transfer_frequency = null;
+      this.paymentProfile.transaction_date = null;
     }
     console.log(`form Value verifiedprofile------------`, this.paymentProfile);    
 
@@ -109,6 +109,7 @@ export class PaymentStepper implements OnInit {
     }
   }
   private getProfile(stepper){
+    
     this._paymentProfileService.getProfiles(this.verifiedProfile).subscribe(newprofile => {
       if(newprofile){
         this.confirmPayDisabled = true;

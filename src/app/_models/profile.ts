@@ -10,10 +10,10 @@ export class Profile {
     target_account: Account;
     source_account_list: Account[];
     target_account_list: Account[];
-    frequency: Frequency;
+    transfer_frequency: Frequency;
     transfer_frequency_list: Frequency[];
-    amount: number;
-    initiationDate: any;
+    transaction_amount: number;
+    transaction_date: any;
     transfer_scheme_list : any[];
     transfer_scheme: string;
     transfer_type_list: TransferType[];
