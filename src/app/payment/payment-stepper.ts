@@ -40,7 +40,8 @@ export class PaymentStepper implements OnInit {
     this.paymentFormGroup = this._formBuilder.group({
       amountCtrl: ['', Validators.required],
       payLaterCtrl : ['NOW'],
-      transferTypeCtrl: ['', Validators.required]
+      transferTypeCtrl: ['', Validators.required],
+      memoCtrl: ['']
     });
     
     this.customer = environment.customer;
@@ -71,6 +72,7 @@ export class PaymentStepper implements OnInit {
     this.paymentProfile.transaction_amount = parseFloat(this.paymentFormGroup.value.amountCtrl);
     this.paymentProfile.transfer_scheme = this.paymentFormGroup.value.payLaterCtrl;
     this.paymentProfile.transfer_type = this.paymentFormGroup.value.transferTypeCtrl;
+    this.paymentProfile.transaction_memo = this.paymentFormGroup.value.memoCtrl;
     if(this.paymentFormGroup.value.payLaterCtrl === 'SCHEDULED'){
       this.paymentProfile.transfer_frequency = this.paymentFormGroup.value.transferFrequencyCtrl;
       this.paymentProfile.transaction_date = _moment(this.paymentFormGroup.value.initiationDateCtrl).format('YYYY-MM-DD');
@@ -78,7 +80,7 @@ export class PaymentStepper implements OnInit {
       this.paymentProfile.transfer_frequency = null;
       this.paymentProfile.transaction_date = null;
     }
-    console.log(`form Value verifiedprofile------------`, this.paymentProfile);    
+    //console.log(`form Value verifiedprofile------------`, this.paymentProfile);    
 
     this._paymentProfileService.validateAttributes(this.paymentProfile).subscribe(verifiedprofile => {
       this.verifiedProfile = verifiedprofile;

@@ -42,6 +42,10 @@
         <mat-label>Transfer Type</mat-label>
       </mat-form-field>
 
+      <mat-form-field>
+        <input matInput placeholder="Remarks" formControlName="memoCtrl" type="text" name="memo" autocomplete="off">
+      </mat-form-field>
+
       <section class="payment-radio-wrapper">
         <mat-radio-group formControlName="payLaterCtrl" (change)="paymentOptionRadioChange($event.value)">
           <mat-radio-button value="NOW">Pay Now</mat-radio-button>
