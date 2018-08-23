@@ -4,7 +4,10 @@
 
 export const environment = {
   production: false,
+  /*Dipanjan Da*/ 
   apiUrl: 'http://10.227.88.31:8080/bank-demo/transfer-composite',
+  /*Sharmi*/ 
+  //apiUrl: 'http://10.227.85.225:13000/bank-demo/transfer-composite',
   customer: {id:300, name:"Dipanjan"}
 };
 

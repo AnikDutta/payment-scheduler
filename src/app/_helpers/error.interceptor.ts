@@ -12,9 +12,11 @@ export class ErrorInterceptor implements HttpInterceptor {
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         
-        return next.handle(request).pipe(map((res)=>{this.loaderService.stopLoading(); return res;}),catchError(err => {
+        return next.handle(request).pipe(map((res)=>{this.loaderService.stopLoading(); this.alert.removeError(); return res;}),catchError(err => {
             if (err.status) {
                this.alert.error(err);
+            }else{
+                this.alert.removeError();
             }
             this.loaderService.stopLoading();
             return throwError(err);

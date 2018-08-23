@@ -25,6 +25,7 @@ export class PaymentStepper implements OnInit {
   retainedPaymentProfile: Profile;
   confirmPayDisabled: boolean = false;
   nowDate: Date = new Date();
+  paylaterSucess: boolean = false;
 
   constructor(private _formBuilder: FormBuilder, private _paymentProfileService : PaymentProfileService) {
 
@@ -111,8 +112,11 @@ export class PaymentStepper implements OnInit {
   private getProfile(stepper){
     
     this._paymentProfileService.getProfiles(this.verifiedProfile).subscribe(newprofile => {
-      if(newprofile){
+      if(newprofile && newprofile.id){
         this.confirmPayDisabled = true;
+       if(this.paymentProfile.transfer_scheme==="SCHEDULED"){ 
+          this.paylaterSucess = true;
+        }
       }else{
         this.confirmPayDisabled = false;
       }
@@ -124,6 +128,9 @@ export class PaymentStepper implements OnInit {
     this.paymentProfile = {...this.retainedPaymentProfile};
     this.confirmPayDisabled = false;
     stepper.reset();
+    this.paymentFormGroup.removeControl('transferFrequencyCtrl');
+    this.paymentFormGroup.removeControl('initiationDateCtrl');
+    this.paymentFormGroup.reset();
     this.paymentFormGroup.controls["payLaterCtrl"].setValue('NOW');
   }
 

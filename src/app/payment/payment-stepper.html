@@ -68,7 +68,7 @@
      
       <div>
         <div class="next-button-wrapper">
-          <button mat-raised-button color="primary" [disabled]="!true" type="button" (click)="verifyTransaction(stepper)">Next</button>
+          <button mat-raised-button color="primary" [disabled]="!paymentFormGroup.valid" type="button" (click)="verifyTransaction(stepper)">Next</button>
         </div>
       </div>
     </form>
@@ -126,7 +126,7 @@
     <ng-template matStepLabel>Confirmation</ng-template>
       <div fxLayout="wrap row" fxLayoutAlign="start" class="confirmation-content" *ngIf="!confirmPayDisable">
           <div class="mat-step-icon background-green"><mat-icon class="fill-white">done</mat-icon></div>
-          <span class="sucess-message">Transaction Successful</span>
+          <span class="sucess-message">{{paylaterSucess ? "Transaction Scheduled Sucessfully" : "Transaction Successful"}}</span>
       </div>
       <div fxLayout="wrap row" fxLayoutAlign="start" class="error-content" *ngIf="confirmPayDisable">
           <div class="mat-step-icon"><mat-icon class="fill-red">error</mat-icon></div>
