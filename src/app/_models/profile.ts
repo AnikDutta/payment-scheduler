@@ -18,7 +18,7 @@ export class Profile {
     transfer_scheme: string;
     transfer_type_list: TransferType[];
     transfer_type: TransferType;
-    transaction_memo: string;
+    transfer_memo: string;
     constructor(){
 
     }
