@@ -69,16 +69,16 @@ export class PaymentStepper implements OnInit {
 
   private verifyTransaction(stepper){
     this.verifiedProfile = null;
-    this.paymentProfile.transaction_amount = parseFloat(this.paymentFormGroup.value.amountCtrl);
+    this.paymentProfile.transfer_amount = parseFloat(this.paymentFormGroup.value.amountCtrl);
     this.paymentProfile.transfer_scheme = this.paymentFormGroup.value.payLaterCtrl;
     this.paymentProfile.transfer_type = this.paymentFormGroup.value.transferTypeCtrl;
     this.paymentProfile.transfer_memo = this.paymentFormGroup.value.memoCtrl;
     if(this.paymentFormGroup.value.payLaterCtrl === 'SCHEDULED'){
       this.paymentProfile.transfer_frequency = this.paymentFormGroup.value.transferFrequencyCtrl;
-      this.paymentProfile.transaction_date = _moment(this.paymentFormGroup.value.initiationDateCtrl).format('YYYY-MM-DD');
+      this.paymentProfile.transfer_date = _moment(this.paymentFormGroup.value.initiationDateCtrl).format("YYYY-MM-DD HH:mm:ss ZZ");
     }else{
       this.paymentProfile.transfer_frequency = null;
-      this.paymentProfile.transaction_date = null;
+      this.paymentProfile.transfer_date = null;
     }
     //console.log(`form Value verifiedprofile------------`, this.paymentProfile);    
 

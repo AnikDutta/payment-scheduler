@@ -62,8 +62,8 @@
           [floatLabel]="auto">
         <mat-select required formControlName="transferFrequencyCtrl" >
           
-          <mat-option [value]="transaction_frequency" *ngFor="let transaction_frequency of paymentProfile.transfer_frequency_list">
-            {{transaction_frequency.description}}
+          <mat-option [value]="transfer_frequency" *ngFor="let transfer_frequency of paymentProfile.transfer_frequency_list">
+            {{transfer_frequency.description}}
           </mat-option>
         </mat-select>
         <mat-label>Transfer Frequency</mat-label>
@@ -101,15 +101,15 @@
           <h2 matLine>Amount</h2>
           <p matLine>
             <span> USD </span>
-            <span>{{verifiedProfile.transaction_amount}}</span>
+            <span>{{verifiedProfile.transfer_amount}}</span>
           </p>
         </mat-list-item>
-        <mat-divider  *ngIf="verifiedProfile.transaction_date"></mat-divider>
-        <mat-list-item *ngIf="verifiedProfile.transaction_date">
+        <mat-divider  *ngIf="verifiedProfile.transfer_date"></mat-divider>
+        <mat-list-item *ngIf="verifiedProfile.transfer_date">
           <h2 matLine>Payment Schedule</h2>
           <p matLine>
             <span> Starting </span>
-            <span>{{verifiedProfile.transaction_date}}</span>
+            <span>{{verifiedProfile.transfer_date}}</span>
           </p>
         </mat-list-item>
         <mat-divider *ngIf="verifiedProfile.transfer_frequency"></mat-divider>

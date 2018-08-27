@@ -12,8 +12,8 @@ export class Profile {
     target_account_list: Account[];
     transfer_frequency: Frequency;
     transfer_frequency_list: Frequency[];
-    transaction_amount: number;
-    transaction_date: any;
+    transfer_amount: number;
+    transfer_date: any;
     transfer_scheme_list : any[];
     transfer_scheme: string;
     transfer_type_list: TransferType[];
